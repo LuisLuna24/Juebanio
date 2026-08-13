@@ -3,14 +3,12 @@
 namespace App\Livewire\Tables\Catalogs;
 
 use App\Models\Category;
-use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use PowerComponents\LivewirePowerGrid\Button;
 use PowerComponents\LivewirePowerGrid\Column;
-use PowerComponents\LivewirePowerGrid\Facades\Filter;
 use PowerComponents\LivewirePowerGrid\Facades\PowerGrid;
-use PowerComponents\LivewirePowerGrid\PowerGridFields;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
+use PowerComponents\LivewirePowerGrid\PowerGridFields;
 
 final class CategoryTable extends PowerGridComponent
 {
@@ -58,7 +56,7 @@ final class CategoryTable extends PowerGridComponent
             Column::make('Status', 'status')
                 ->toggleable(true, 'Activo', 'Inactivo'),
 
-            Column::action('Action')
+            Column::action('Action'),
         ];
     }
 
@@ -66,8 +64,6 @@ final class CategoryTable extends PowerGridComponent
     {
         return [];
     }
-
-
 
     public function actions(Category $row): array
     {

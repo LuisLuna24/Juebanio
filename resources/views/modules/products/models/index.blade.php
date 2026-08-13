@@ -1,3 +1,3 @@
-<x-layouts::app :title="__('Models')">
+<x-layouts::app :title="__('Products')">
     @livewire('modules.products.models.index')
 </x-layouts::app>

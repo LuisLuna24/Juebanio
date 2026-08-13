@@ -3,17 +3,19 @@
 namespace App\Livewire\Modules\Catalogs\Categories;
 
 use App\Models\Category;
+use Illuminate\Support\Str;
+use Livewire\Attributes\On;
 use Livewire\Component;
-use \Illuminate\Support\Str;
 
 class Index extends Component
 {
-
     public string $name = '';
+
     public ?int $id = null;
+
     public $showCardModal = false;
 
-    #[\Livewire\Attributes\On('edit')]
+    #[On('edit')]
     public function edit($id)
     {
         $this->id = $id;
@@ -25,7 +27,7 @@ class Index extends Component
     public function save()
     {
         $this->validate([
-            'name' => 'required|unique:categories,name,' . $this->id . ',id',
+            'name' => 'required|unique:categories,name,'.$this->id.',id',
         ]);
         try {
             $slug = Str::slug($this->name);
@@ -52,13 +54,12 @@ class Index extends Component
             variant: $type,
             sender: [
                 'name' => 'Jack Ellis',
-                'avatar' => 'https://penguinui.s3.amazonaws.com/component-assets/avatar-2.webp'
+                'avatar' => 'https://penguinui.s3.amazonaws.com/component-assets/avatar-2.webp',
             ],
             title: $title,
             message: $message
         );
     }
-
 
     public function render()
     {

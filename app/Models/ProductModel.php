@@ -17,6 +17,7 @@ class ProductModel extends Model
         'category_id',
         'name',
         'slug',
+        'sku',
         'description',
         'material',
         'cover_image',

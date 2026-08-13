@@ -3,17 +3,18 @@
 namespace App\Livewire\Modules\Catalogs\Seasons;
 
 use App\Models\Season;
+use Livewire\Attributes\On;
 use Livewire\Component;
-use \Illuminate\Support\Str;
 
 class Index extends Component
 {
-
     public string $name = '';
+
     public ?int $id = null;
+
     public $showCardModal = false;
 
-    #[\Livewire\Attributes\On('edit')]
+    #[On('edit')]
     public function edit($id)
     {
         $this->id = $id;
@@ -25,7 +26,7 @@ class Index extends Component
     public function save()
     {
         $this->validate([
-            'name' => 'required|unique:seasons,name,' . $this->id . ',id',
+            'name' => 'required|unique:seasons,name,'.$this->id.',id',
         ]);
         try {
 

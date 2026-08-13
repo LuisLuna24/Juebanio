@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ComponentController;
-use App\Http\Controllers\ModelController;
 use App\Http\Controllers\ProductModelController;
 use App\Http\Controllers\SeasonController;
 use Illuminate\Support\Facades\Route;
@@ -16,8 +15,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('seasons', SeasonController::class)->only('index');
     Route::resource('components', ComponentController::class)->only('index');
 
-
     Route::resource('product-models', ProductModelController::class)->only('index');
 });
 
-require __DIR__ . '/settings.php';
+require __DIR__.'/settings.php';
