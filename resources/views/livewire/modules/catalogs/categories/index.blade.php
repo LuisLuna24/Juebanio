@@ -14,7 +14,7 @@
     </div>
 
     <!-- Edit Modal -->
-    <x-w-modal-card title="Edit Customer" name="cardModal">
+    <x-w-modal-card title="Categoría" name="cardModal" wire:model="showCardModal">
         <form wire:submit.prevent="save">
             <x-w-input label="Nombre de la categoría" placeholder="Juego de baño, toalla, ..." wire:model="name" />
 

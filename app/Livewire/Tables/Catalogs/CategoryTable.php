@@ -44,7 +44,6 @@ final class CategoryTable extends PowerGridComponent
         return PowerGrid::fields()
             ->add('id')
             ->add('name')
-            ->add('slug')
             ->add('status');
     }
 
@@ -53,10 +52,6 @@ final class CategoryTable extends PowerGridComponent
         return [
             Column::make('Id', 'id'),
             Column::make('Name', 'name')
-                ->sortable()
-                ->searchable(),
-
-            Column::make('Slug', 'slug')
                 ->sortable()
                 ->searchable(),
 
@@ -72,20 +67,16 @@ final class CategoryTable extends PowerGridComponent
         return [];
     }
 
-    #[\Livewire\Attributes\On('edit')]
-    public function edit($rowId): void
-    {
-        $this->js('alert(' . $rowId . ')');
-    }
+
 
     public function actions(Category $row): array
     {
         return [
             Button::add('edit')
-                ->slot('Editar')
+                ->slot('<div class="flex items-center gap-2"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg> Editar</div>')
                 ->id()
-                ->class('pg-btn-white dark:ring-pg-primary-600 dark:border-pg-primary-600 dark:hover:bg-pg-primary-700 dark:ring-offset-pg-primary-800 dark:text-pg-primary-300 dark:bg-pg-primary-700')
-                ->dispatch('edit', ['rowId' => $row->id]),
+                ->class('inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500')
+                ->dispatch('edit', ['id' => $row->id]),
         ];
     }
 

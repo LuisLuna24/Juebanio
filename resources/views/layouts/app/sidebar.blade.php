@@ -6,6 +6,7 @@
 </head>
 
 <body class="min-h-screen bg-white dark:bg-zinc-800">
+    <x-notifications />
     <flux:sidebar sticky collapsible="mobile"
         class="border-e border-zinc-200 bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900">
         <flux:sidebar.header>
@@ -18,6 +19,10 @@
                 <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')"
                     wire:navigate>
                     {{ __('Dashboard') }}
+                </flux:sidebar.item>
+                <flux:sidebar.item icon="swatch" :href="route('product-models.index')"
+                    :current="request()->routeIs('product-models.*')" wire:navigate>
+                    {{ __('Productos') }}
                 </flux:sidebar.item>
             </flux:sidebar.group>
             <flux:sidebar.group expandable heading="Catalogos" class="grid"

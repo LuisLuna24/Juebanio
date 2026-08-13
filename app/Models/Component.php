@@ -12,6 +12,12 @@ class Component extends Model
 
     protected $fillable = [
         'name',
+        'slug',
+        'status',
+    ];
+
+    protected $casts = [
+        'status' => 'boolean',
     ];
 
     public function variants(): BelongsToMany
