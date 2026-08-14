@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Support\Facades\Storage;
 
 class ProductModel extends Model
 {
@@ -18,11 +19,23 @@ class ProductModel extends Model
         'name',
         'slug',
         'sku',
+        'price_bace',
         'description',
         'material',
         'cover_image',
         'status',
     ];
+
+    public function getImageUrlAttribute(): ?string
+    {
+        if (! $this->cover_image) {
+            return null;
+        }
+
+        return Storage::disk('public')->exists($this->cover_image)
+            ? Storage::url($this->cover_image)
+            : null;
+    }
 
     public function season(): BelongsTo
     {

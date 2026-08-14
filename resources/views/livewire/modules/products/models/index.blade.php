@@ -5,83 +5,110 @@
             <h1 class="text-2xl font-bold text-gray-800 dark:text-white">Productos</h1>
             <p class="text-gray-600 dark:text-gray-300">Administra los productos</p>
         </div>
-        <x-w-button label="Nuevo Producto" x-on:click="$openModal('cardModal')" primary />
+        <x-w-button label="Nuevo Producto" x-on:click="$openModal('cardModal'), $wire.resetForm()" primary />
     </div>
 
     <!-- Table Component -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         @forelse ($models as $model)
             <article
-                class="group flex flex-col w-full max-w-sm rounded-xl overflow-hidden border border-neutral-200 bg-white shadow-sm hover:shadow-md transition-all duration-300 dark:border-neutral-700 dark:bg-neutral-900">
+                class="group relative flex flex-col w-full max-w-sm rounded-2xl overflow-hidden border border-neutral-200 bg-white shadow-sm transition-all duration-300 hover:shadow-xl hover:-translate-y-0.5 dark:border-neutral-800 dark:bg-neutral-900">
 
                 <!-- Imagen del Producto -->
-                <div class="relative h-48 w-full overflow-hidden bg-neutral-100 dark:bg-neutral-800">
+                <div class="relative h-52 w-full overflow-hidden bg-neutral-100 dark:bg-neutral-800">
+                    <img src="{{ $model->image_url ?? 'https://penguinui.s3.amazonaws.com/component-assets/card-img-2.webp' }}"
+                        class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                        alt="Fotografía de {{ $model->name }}" />
+
+                    <!-- Overlay degradado para legibilidad -->
+                    <div
+                        class="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 via-black/0 to-black/0">
+                    </div>
+
+                    <!-- Categoría -->
                     <span
-                        class="absolute top-3 right-3 z-10 inline-flex items-center gap-1 rounded-full bg-black/60 backdrop-blur-md px-2.5 py-1 text-xs font-semibold text-white shadow-sm">
+                        class="absolute top-3 left-3 z-10 inline-flex items-center gap-1.5 rounded-full bg-black/50 backdrop-blur-md px-3 py-1 text-xs font-semibold tracking-wide text-white shadow-sm ring-1 ring-white/10">
                         <x-w-icon name="chart-pie" class="w-3.5 h-3.5" />
                         {{ $model->category->name }}
                     </span>
 
-                    <img src="{{ $model->image_url ?? 'https://penguinui.s3.amazonaws.com/component-assets/card-img-2.webp' }}"
-                        class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                        alt="Fotografía de {{ $model->name }}" />
+                    <!-- Badge de estado -->
+                    <span
+                        class="absolute top-3 right-3 z-10 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold shadow-sm ring-1 backdrop-blur-md"
+                        x-data="{ isActive: {{ $model->status ? 'true' : 'false' }} }"
+                        :class="isActive
+                            ?
+                            'bg-green-500/90 text-white ring-green-300/40' :
+                            'bg-neutral-500/60 text-white ring-white/10'">
+                        <span class="h-1.5 w-1.5 rounded-full bg-white"
+                            :class="isActive ? 'animate-pulse' : 'opacity-60'"></span>
+                        <span x-text="isActive ? 'Activo' : 'Inactivo'"></span>
+                    </span>
+
+                    <!-- Precio -->
+                    <div class="absolute bottom-3 left-3 z-10">
+                        <span
+                            class="inline-flex items-baseline gap-1 rounded-lg bg-white/95 dark:bg-neutral-900/95 px-3 py-1.5 shadow-sm">
+                            <span
+                                class="text-[10px] font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400">Desde</span>
+                            <span
+                                class="text-base font-bold text-neutral-900 dark:text-white">${{ number_format($model->price_bace, 2) }}</span>
+                        </span>
+                    </div>
                 </div>
 
                 <!-- Contenedor de Información -->
                 <div class="flex flex-col flex-grow p-5">
 
-                    <!-- Header del Contenido: SKU y Toggle de Status -->
-                    <div class="flex items-center justify-between mb-3">
-                        <div
-                            class="flex items-center gap-1.5 text-xs font-mono font-medium text-neutral-500 dark:text-neutral-400">
-                            <x-w-icon name="finger-print" class="w-4 h-4" />
-                            <span>SKU: {{ $model->sku }}</span>
-                        </div>
-
-                        <!-- Toggle Alpine/Livewire -->
-                        <div x-data="{ isActive: {{ $model->status ? 'true' : 'false' }} }" class="flex items-center gap-2">
-                            <span class="text-xs font-medium"
-                                :class="isActive ? 'text-green-600 dark:text-green-400' :
-                                    'text-neutral-400 dark:text-neutral-500'"
-                                x-text="isActive ? 'Activo' : 'Inactivo'">
-                            </span>
-
-                            <button type="button"
-                                x-on:click="isActive = !isActive; $wire.toggleStatus({{ $model->id }})"
-                                :class="isActive ? 'bg-green-500' : 'bg-neutral-300 dark:bg-neutral-600'"
-                                class="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-neutral-900"
-                                role="switch" :aria-checked="isActive.toString()">
-                                <span aria-hidden="true" :class="isActive ? 'translate-x-4' : 'translate-x-0'"
-                                    class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out">
-                                </span>
-                            </button>
-                        </div>
+                    <!-- SKU -->
+                    <div
+                        class="flex items-center gap-1.5 mb-2 text-xs font-mono text-neutral-400 dark:text-neutral-500">
+                        <x-w-icon name="finger-print" class="w-3.5 h-3.5" />
+                        <span>{{ $model->sku }}</span>
                     </div>
 
-                    <!-- Título Principal -->
-                    <h3 class="text-xl font-bold text-neutral-900 dark:text-white line-clamp-2 leading-tight mb-2"
+                    <!-- Título -->
+                    <h3 class="text-xl font-bold text-neutral-900 dark:text-white line-clamp-2 leading-tight mb-1.5"
                         title="{{ $model->name }}">
                         {{ $model->name }}
                     </h3>
 
                     <!-- Descripción -->
-                    <p class="text-sm text-neutral-600 dark:text-neutral-400 line-clamp-3 mb-4">
+                    <p class="text-sm text-neutral-600 dark:text-neutral-400 line-clamp-2 mb-4">
                         {{ $model->description }}
                     </p>
 
+                    <!-- Toggle de estado (dentro del cuerpo, ya no flotando sobre la imagen) -->
+                    <div x-data="{ isActive: {{ $model->status ? 'true' : 'false' }} }"
+                        class="flex items-center justify-between mb-4 rounded-lg bg-neutral-50 dark:bg-neutral-800/60 px-3 py-2">
+                        <span class="text-xs font-medium text-neutral-600 dark:text-neutral-300">Visible en
+                            catálogo</span>
+                        <button type="button"
+                            x-on:click="isActive = !isActive; $wire.toggleStatus({{ $model->id }})"
+                            :class="isActive ? 'bg-green-500' : 'bg-neutral-300 dark:bg-neutral-600'"
+                            class="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-neutral-900"
+                            role="switch" :aria-checked="isActive.toString()">
+                            <span aria-hidden="true" :class="isActive ? 'translate-x-4' : 'translate-x-0'"
+                                class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out">
+                            </span>
+                        </button>
+                    </div>
+
                     <!-- Zona de Acciones -->
                     <div class="mt-auto pt-4 border-t border-neutral-100 dark:border-neutral-800">
-                        <div class="grid grid-cols-2 gap-3">
+                        <div class="grid grid-cols-3 gap-2">
                             <x-w-button icon="pencil" label="Editar" x-on:click="$openModal('cardModal')" primary
                                 class="w-full justify-center" wire:click="edit({{ $model->id }})" />
-                            <x-w-button icon="trash" label="Eliminar" negative class="w-full justify-center" />
+                            <x-w-button icon="photo" label="Modelos" positive class="w-full justify-center" />
+                            <x-w-button icon="trash" label="Eliminar" negative class="w-full justify-center"
+                                x-on:click="$wire.openDeleteModal({{ $model->id }})" />
                         </div>
                     </div>
 
                 </div>
             </article>
         @empty
-            <div class="flex flex-col items-center justify-center h-64">
+            <div class="flex flex-col items-center justify-center h-64 ">
                 <svg class="w-16 h-16 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -100,6 +127,8 @@
                 <x-w-input label="Nombre del producto" placeholder="Eje: Juego de baño, toalla, ..."
                     wire:model="name" />
                 <x-w-input label="SKU" placeholder="Eje: BAN-0001" wire:model="sku" />
+                <x-w-currency label="Precio Base" placeholder="Eje: 19.99" icon="currency-dollar" thousands=","
+                    decimal="." precision="2" wire:model="price_bace" />
                 <x-w-textarea label="Descripción" placeholder="Eje: Juego de baño, toalla, ..."
                     wire:model="description" />
             </div>
@@ -179,4 +208,16 @@
             </x-slot>
         </form>
     </x-w-modal-card>
+
+
+    <x-w-modal-card name="deleteModal" wire:model="showDeleteModal">
+        <x-slot name="title">Eliminar Modelo</x-slot>
+        <p class="text-sm text-gray-600 dark:text-gray-300">¿Estás seguro de que deseas eliminar este modelo?
+            Esta acción no se puede deshacer.</p>
+        <x-slot name="footer" class="flex justify-end gap-x-4">
+            <x-w-button flat label="Cancelar" x-on:click="close" wire:click="closeDeleteModal" />
+            <x-w-button negative label="Eliminar" wire:click="delete" />
+        </x-slot>
+    </x-w-modal-card>
+
 </div>

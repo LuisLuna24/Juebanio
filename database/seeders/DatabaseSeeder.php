@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\Season;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -24,9 +25,15 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('Hmcnjsa1*.'),
         ]);
 
-        foreach (['Baño', 'Cocina', 'Jardín', 'Living', 'Textiles'] as $name) {
+        foreach (['Juego de baño', 'Toallero', 'Sublimación', 'Fundas', 'Stickers y calcomanias'] as $name) {
             Category::query()->firstOrCreate(
                 ['slug' => Str::slug($name)],
+                ['name' => $name, 'status' => true],
+            );
+        }
+
+        foreach (['Sin temporada', 'Halloween', 'Navidad'] as $name) {
+            Season::query()->firstOrCreate(
                 ['name' => $name, 'status' => true],
             );
         }
