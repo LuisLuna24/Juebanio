@@ -4,7 +4,7 @@
 <head>
     @include('partials.head')
 
-    
+
 </head>
 
 <body
@@ -15,21 +15,10 @@
 
             <a href="{{ url('/') }}"
                 class="flex items-center gap-2.5 font-extrabold text-pink-600 text-lg tracking-tight">
-                <img src="{{ asset('images/logo.webp') }}" alt="El Taller"
+                <img src="{{ asset('logo.webp') }}" alt="El Taller"
                     class="h-9 w-9 object-contain rounded-full ring-2 ring-pink-200" />
                 El Taller
             </a>
-
-            <nav class="flex items-center gap-2 text-sm">
-                <a href="#catalogo"
-                    class="hidden sm:inline-block px-4 py-1.5 text-pink-500 hover:text-pink-600 rounded-full transition-colors leading-normal">
-                    Catálogo
-                </a>
-                <a href="#contacto"
-                    class="inline-block px-5 py-1.5 bg-pink-500 hover:bg-pink-600 text-white rounded-full transition-colors leading-normal shadow-sm shadow-pink-200">
-                    Contáctanos
-                </a>
-            </nav>
         </div>
     </header>
 
@@ -46,4 +35,5 @@
         </div>
     </footer>
 </body>
+
 </html>
