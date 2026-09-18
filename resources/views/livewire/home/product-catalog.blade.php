@@ -78,7 +78,7 @@
                                 Categoría
                             </h2>
 
-                            @if ($categoryId || $search)
+                            @if ($category || $search)
                                 <button wire:click="clearFilters" class="text-xs text-pink-600 hover:text-pink-700">
                                     Limpiar
                                 </button>
@@ -90,7 +90,7 @@
                             <button wire:click="selectCategory(null)"
                                 class="w-full flex items-center justify-between
                                        px-3 py-2 rounded-lg text-sm transition cursor-pointer
-                                       {{ is_null($categoryId) ? 'bg-pink-50 text-pink-700 font-medium' : 'text-gray-600 hover:bg-gray-50' }}">
+                                       {{ is_null($category) ? 'bg-pink-50 text-pink-700 font-medium' : 'text-gray-600 hover:bg-gray-50' }}">
                                 <span>Todos</span>
 
                                 <span class="text-xs text-gray-400">
@@ -98,18 +98,18 @@
                                 </span>
                             </button>
 
-                            @foreach ($categories as $category)
-                                <button wire:click="selectCategory({{ $category->id }})"
+                            @foreach ($categories as $cat)
+                                <button wire:click="selectCategory('{{ $cat->slug }}')"
                                     class="w-full flex items-center justify-between
                                            px-3 py-2 rounded-lg text-sm transition cursor-pointer
-                                           {{ $categoryId === $category->id ? 'bg-pink-50 text-pink-700 font-medium' : 'text-gray-600 hover:bg-gray-50' }}">
+                                           {{ $category === $cat->slug ? 'bg-pink-50 text-pink-700 font-medium' : 'text-gray-600 hover:bg-gray-50' }}">
                                     <span>
-                                        {{ $category->name }}
+                                        {{ $cat->name }}
                                     </span>
 
-                                    @if (isset($category->products_count))
+                                    @if (isset($cat->products_count))
                                         <span class="text-xs text-gray-400">
-                                            {{ $category->products_count }}
+                                            {{ $cat->products_count }}
                                         </span>
                                     @endif
 
@@ -396,10 +396,10 @@
                             Todos
                         </button>
 
-                        @foreach ($categories as $category)
-                            <button wire:click="selectCategory({{ $category->id }}); filtersOpen = false"
+                        @foreach ($categories as $cat)
+                            <button wire:click="selectCategory('{{ $cat->slug }}'); filtersOpen = false"
                                 class="w-full text-left px-3 py-2 rounded-lg text-sm">
-                                {{ $category->name }}
+                                {{ $cat->name }}
                             </button>
                         @endforeach
 

@@ -7,6 +7,7 @@ use App\Http\Controllers\SeasonController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome')->name('home');
+Route::view('/catalogo', 'catalogo')->name('catalogo');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::view('dashboard', 'dashboard')->name('dashboard');
@@ -18,4 +19,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('product-models', ProductModelController::class)->only('index');
 });
 
-require __DIR__.'/settings.php';
+require __DIR__ . '/settings.php';

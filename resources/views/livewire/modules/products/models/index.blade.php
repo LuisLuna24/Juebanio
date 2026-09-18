@@ -117,8 +117,8 @@
                 <p class="text-gray-600 dark:text-gray-300">No se han creado modelos todavía.</p>
             </div>
         @endforelse
-
     </div>
+    <div class="mt-6">{{ $models->links() }}</div>
 
     <!-- Edit Modal -->
     <x-w-modal-card title="Categoría" name="cardModal" wire:model="showCardModal">

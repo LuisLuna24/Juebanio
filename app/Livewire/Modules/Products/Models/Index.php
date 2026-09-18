@@ -51,7 +51,7 @@ class Index extends Component
         $this->validate([
             'name' => 'required|string|max:255',
             'sku' => 'required|string|max:255|unique:product_models,sku' . (isset($this->id) ? ',' . $this->id . ',id' : null),
-            'price_bace' => 'nullable|numeric|min:0',
+            'price_bace' => 'required|numeric|min:0',
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
             'season_id' => 'required|exists:seasons,id',
@@ -186,7 +186,7 @@ class Index extends Component
 
     public function render()
     {
-        $models = ProductModel::with('category', 'season')->paginate(10);
+        $models = ProductModel::with('category', 'season')->paginate(12);
 
         return view('livewire.modules.products.models.index', compact('models'));
     }
